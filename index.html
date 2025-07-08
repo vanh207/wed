@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1300 Ngày Yêu Em</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@400;700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Playfair Display', serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23e84393" d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>'), auto;
+        }
+        
+        /* Dải ảnh chạy ở đầu trang */
+        .image-slider-top {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+        
+        .slider-top {
+            display: flex;
+            animation: slideLeft 30s linear infinite;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
+        
+        /* Dải ảnh chạy ở cuối trang */
+        .image-slider-bottom {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.3);
+            margin-top: 20px;
+        }
+        
+        .slider-bottom {
+            display: flex;
+            animation: slideRight 30s linear infinite;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+        }
+        
+        @keyframes slideLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        @keyframes slideRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+        
+        .slider-img {
+            height: 100%;
+            width: auto;
+            margin: 0 10px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .slider-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b81;
+            transform: rotate(45deg);
+            opacity: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #ff6b81;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: rotate(45deg) translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-500px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        header {
+            text-align: center;
+            margin: 30px 0;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+        
+        header:hover {
+            transform: scale(1.02);
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #e84393;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        h1:hover {
+            text-shadow: 0 0 10px rgba(232, 67, 147, 0.5);
+        }
+        
+        .date {
+            font-size: 1.2rem;
+            color: #6c5ce7;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .date:hover {
+            color: #e84393;
+        }
+        
+        .letters-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            z-index: 2;
+            max-width: 1200px;
+        }
+        
+        .letter {
+            width: 300px;
+            height: 200px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .letter:hover {
+            transform: translateY(-10px) rotateY(10deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #e84393;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .letter-content {
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.5;
+            text-align: center;
+        }
+        
+        .letter:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: rgba(232, 67, 147, 0.1);
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .envelope {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 60px;
+            background: #ff7675;
+            border-radius: 5px;
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+        
+        .letter:hover .envelope {
+            transform: translate(-50%, -50%) rotateX(180deg);
+            opacity: 0;
+        }
+        
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 30px solid #ff7675;
+        }
+        
+        .envelope:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-content:hover {
+            box-shadow: 0 15px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #e84393;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            transform: rotate(90deg);
+            color: #ff0000;
+        }
+        
+        .modal-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #e84393;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .audio-container {
+            display: none;
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f8f9fa;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .audio-container:hover {
+            background: #e9ecef;
+        }
+        
+        .audio-player {
+            width: 100%;
+        }
+        
+        .floating-photos {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .floating-photo {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            opacity: 0.9;
+            animation: floatPhoto 20s linear infinite;
+        }
+        
+        @keyframes floatPhoto {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(calc(100vw - 200px), calc(100vh - 200px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            color: #6c5ce7;
+            font-weight: bold;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        footer:hover {
+            color: #e84393;
+            transform: scale(1.05);
+        }
+        
+        /* Nhạc nền */
+        .background-music {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e84393;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .background-music:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .music-icon {
+            font-size: 24px;
+        }
+        
+        /* Hiệu ứng click */
+        .click-effect {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(232, 67, 147, 0.6);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            animation: clickAnimation 0.6s ease-out forwards;
+        }
+        
+        @keyframes clickAnimation {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(3);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .letters-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .letter {
+                width: 80%;
+            }
+            
+            .image-slider-top, .image-slider-bottom {
+                height: 80px;
+            }
+            
+            .background-music {
+                width: 40px;
+                height: 40px;
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .music-icon {
+                font-size: 18px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="floating-photos" id="floatingPhotos"></div>
+    <div class="background-music" id="musicToggle">
+        <i class="fas fa-music music-icon"></i>
+    </div>
+    <audio id="backgroundMusic" src="audio/4.mp3" auto play></audio>
+    <div class="image-slider-top">
+        <div class="slider-top" id="sliderTop">
+        </div>
+    </div>
+    
+    <header>
+        <h1>Gửi người anh yêu </h1>
+        <div class="date">Hãy mở từng bức thư 1 nhé</div>
+    </header>
+    
+    <div class="letters-container">
+        <div class="letter" onclick="openModal(1)">
+            <div class="letter-title">Ngày Đầu Tiên</div>
+            <div class="envelope"></div>
+        </div>
+        
+        <div class="letter" onclick="openModal(2)">
+            <div class="letter-title">Hành Trình Yêu</div>
+            <div class="envelope"></div>
+        </div>
+        
+        <div class="letter" onclick="openModal(3)">
+            <div class="letter-title">Tương Lai Của Chúng Ta</div>
+            <div class="envelope"></div>
+        </div>
+    </div>
+    <div class="image-slider-bottom">
+        <div class="slider-bottom" id="sliderBottom">
+        </div>
+    </div>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modalTitle">Tiêu đề thư</h2>
+            <p class="modal-text" id="modalText">Nội dung thư sẽ hiển thị ở đây...</p>
+            <div class="audio-container" id="audioContainer">
+                <audio controls class="audio-player" id="audioPlayer">
+                    <source src="" type="audio/mpeg">
+                    Trình duyệt của bạn không hỗ trợ phát audio.
+                </audio>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        Mãi mãi yêu em - Ngày kỷ niệm đặc biệt của chúng ta
+    </footer>
+    
+    <script>
+        const sliderImages = [
+            'img/7.jpg',
+            'img/8.jpg',
+            'img/9.jpg',
+            'img/10.jpg',
+            'img/11.jpg',
+            'img/12.jpg',
+            'img/13.jpg',
+            'img/14.jpg',
+            'img/15.jpg',
+            'img/16.jpg',
+            'img/17.jpg',
+            'img/18.jpg',
+            'img/19.jpg',
+            'img/20.jpg',
+            'img/21.jpg',
+            'img/22.jpg',
+            'img/23.jpg',
+            'img/24.jpg',
+            'img/25.jpg',
+            'img/26.jpg',
+            'img/27.jpg',
+            'img/28.jpg',
+            'img/29.jpg' ,  
+            'img/30.jpg'  ,
+            'img/31.jpg'  ,
+            'img/32.jpg' ,
+            'img/33.jpg'  ,
+            'img/34.jpg'   ,
+        ];
+        
+        function createSliders() {
+            const sliderTop = document.getElementById('sliderTop');
+            const sliderBottom = document.getElementById('sliderBottom');
+            
+            const doubleImages = [...sliderImages, ...sliderImages];
+            
+            doubleImages.forEach(imgUrl => {
+                const imgTop = document.createElement('img');
+                imgTop.classList.add('slider-img');
+                imgTop.src = imgUrl;
+                sliderTop.appendChild(imgTop);
+                const imgBottom = document.createElement('img');
+                imgBottom.classList.add('slider-img');
+                imgBottom.src = imgUrl;
+                sliderBottom.appendChild(imgBottom);
+            });
+        }
+        
+
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.opacity = Math.random();
+                heart.style.animationDuration = 3 + Math.random() * 7 + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        function createFloatingPhotos() {
+            const photosContainer = document.getElementById('floatingPhotos');
+            const photos = [
+                'img/1.jpg', 
+                'img/2.jpg',    
+                'img/3.jpg',    
+                'img/4.jpg',    
+                'img/5.jpg',    
+                'img/6.jpg',    
+            ];
+            
+            for (let i = 0; i < photos.length; i++) {
+                const img = document.createElement('img');
+                img.classList.add('floating-photo');
+                img.src = photos[i];
+                img.style.left = Math.random() * 80 + 'vw';
+                img.style.top = Math.random() * 80 + 'vh';
+                img.style.animationDuration = 15 + Math.random() * 20 + 's';
+                img.style.animationDelay = Math.random() * 10 + 's';
+                photosContainer.appendChild(img);
+            }
+        }
+        
+
+        const letters = [
+            {
+                title: "Ngày Đầu Tiên",
+                content: "Em yêu, anh vẫn nhớ như in ngày đầu tiên chúng ta gặp nhau. Ánh mắt em, nụ cười em, tất cả đã khiến trái tim anh rung động từ cái nhìn đầu tiên. Anh không biết mình đã may mắn thế nào khi được gặp em, được yêu em và được em yêu lại. 1300 ngày qua, mỗi ngày bên em đều là một món quà vô giá với anh. Cảm ơn em đã đến bên anh và làm cuộc sống của anh trở nên đẹp đẽ hơn bao giờ hết.",
+                song: "audio/1.mp3"
+            },
+            {
+                title: "Hành Trình Yêu",
+                content: "Chúng ta đã cùng nhau trải qua biết bao kỷ niệm đẹp trong 1300 ngày qua. Từ những buổi lần đầu đi với nhau ngượng ngùng, đến những lần cầm tay nhau đi dạo dưới ánh đèn của trường. Anh nhớ cả những lúc chúng ta cãi vã, giận dỗi, nhưng sau tất cả, tình yêu của chúng ta càng trở nên mạnh mẽ hơn. Em là người khiến anh hiểu rằng, yêu không chỉ là những điều ngọt ngào, mà còn là cùng nhau vượt qua sóng gió. Cảm ơn em đã đến bên anh và khiến cho cuộc sống của anh thêm nhuộm màu. Yêu em rất nhiều.",
+                song: "audio/2.mp3"
+            },
+            {
+                title: "Tương Lai Của Chúng Ta",
+                content: "1300 ngày đã qua, nhưng với anh, đây chỉ là khởi đầu của một hành trình dài phía trước. Anh mơ về một ngôi nhà nhỏ có em, nơi chúng ta cùng nhau xây dựng tổ ấm. Anh mong được nhìn thấy em cười mỗi sáng thức dậy, được cùng em đón những mùa xuân mới, hè sang, thu về, đông tới. Dù tương lai có thế nào đi nữa, miễn là có em bên cạnh, anh tin chúng ta có thể vượt qua tất cả. Anh yêu em hôm nay, ngày mai và mãi mãi về sau và mong rằng chúng ta sẽ cùng nhau thực hiện được tương lai của hai đứa và cùng nhau đi hết quãng đời còn lại",
+                song: "audio/3.mp3"
+            }
+        ];
+        
+
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    let isMusicPlaying = true; 
+
+
+    musicToggle.addEventListener('click', function() {
+        toggleMusic();
+    });
+
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            backgroundMusic.pause();
+            musicToggle.innerHTML = '<i class="fas fa-music music-icon"></i>';
+        } else {
+            backgroundMusic.play();
+            musicToggle.innerHTML = '<i class="fas fa-pause music-icon"></i>';
+        }
+        isMusicPlaying = !isMusicPlaying;
+    }
+
+
+    function openModal(letterIndex) {
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalText = document.getElementById('modalText');
+        const audioPlayer = document.getElementById('audioPlayer');
+        
+
+        if (isMusicPlaying) {
+            toggleMusic();
+        }
+
+        modalTitle.textContent = letters[letterIndex - 1].title;
+        audioPlayer.src = letters[letterIndex - 1].song;
+        
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+
+        modalText.textContent = ''; 
+        modalText.style.borderRight = '2px solid #e84393'; 
+        modalText.style.animation = 'blinkCursor 0.75s step-end infinite';
+        
+        const text = letters[letterIndex - 1].content;
+        let i = 0;
+        const speed = 20; 
+        
+        function typeWriter() {
+            if (i < text.length) {
+                modalText.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+
+                modalText.style.borderRight = 'none';
+                modalText.style.animation = 'none';
+            }
+        }
+        
+
+        typeWriter();
+        
+
+        setTimeout(() => {
+            audioPlayer.play();
+        }, 500);
+    }
+    
+
+    function closeModal() {
+        const modal = document.getElementById('modal');
+        const audioPlayer = document.getElementById('audioPlayer');
+        
+
+        audioPlayer.pause();
+        
+
+        if (!isMusicPlaying) {
+            toggleMusic();
+        }
+        
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document.body.addEventListener('click', function startMusic() {
+            backgroundMusic.play()
+                .then(() => {
+                    isMusicPlaying = true;
+                    musicToggle.innerHTML = '<i class="fas fa-pause music-icon"></i>';
+                })
+                .catch(error => {
+                    console.log('Tự động phát nhạc bị chặn:', error);
+                });
+            
+
+            document.body.removeEventListener('click', startMusic);
+        }, { once: true });
+        
+
+        backgroundMusic.play()
+            .then(() => {
+                isMusicPlaying = true;
+                musicToggle.innerHTML = '<i class="fas fa-pause music-icon"></i>';
+            })
+            .catch(error => {
+                console.log('Tự động phát nhạc bị chặn:', error);
+            });
+    });
+
+            document.body.addEventListener('click', function startMusic() {
+                if (!isMusicPlaying) {
+                    backgroundMusic.play()
+                        .then(() => {
+                            isMusicPlaying = true;
+                            musicToggle.innerHTML = '<i class="fas fa-pause music-icon"></i>';
+                        })
+                        .catch(error => {
+                            console.log('Tự động phát nhạc bị chặn:', error);
+                        });
+                }
+
+                document.body.removeEventListener('click', startMusic);
+            }, { once: true });
+
+        document.addEventListener('click', function(e) {
+
+            if (e.target.closest('.no-click-effect')) return;
+            
+            const clickEffect = document.createElement('div');
+            clickEffect.classList.add('click-effect');
+            clickEffect.style.left = e.clientX + 'px';
+            clickEffect.style.top = e.clientY + 'px';
+            document.body.appendChild(clickEffect);
+            
+
+            setTimeout(() => {
+                clickEffect.remove();
+            }, 600);
+        });
+        
+
+        document.querySelectorAll('a, button, .letter, .slider-img, header, footer').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+        
+
+        window.onload = function() {
+            createSliders();
+            createHearts();
+            createFloatingPhotos();
+            
+            // Thay đổi con trỏ chuột thành trái tim
+            document.body.style.cursor = 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'><path fill=\'%23e84393\' d=\'M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z\'/></svg>"), auto';
+        }
+    </script>
+</body>
+</html>
